@@ -1,0 +1,257 @@
+/*
+ * Copyright (C) 2017 vhoa1
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package Interface;
+
+import gamefestival.ColaboradorPago;
+import gamefestival.GameDesigner;
+import gamefestival.GameFestival;
+import static java.awt.Color.WHITE;
+import java.awt.Toolkit;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.table.AbstractTableModel;
+
+/**
+ *
+ * @author vhoa1
+ */
+public class ImprimeCartaz extends javax.swing.JFrame {
+private AbstractTableModel modeloTabela;
+private GameFestival game;
+
+    private ArrayList<GameDesigner> designers;
+    private ArrayList<LocalDateTime>datas;
+    private ArrayList<GameDesigner> designersSort;
+    /**
+     * Creates new form ImprimeGameDesigners
+     */
+    public ImprimeCartaz(GameFestival game) {
+        initComponents();
+        this.game = game;
+        designers = new ArrayList<>();
+        datas = new ArrayList<>();
+        designersSort = new ArrayList<>();
+        setICon();
+        this.modeloTabela = criarModeloTabela();
+        tabCartaz.setModel(modeloTabela);
+    
+        
+        JScrollPane enclosingScrollPane = (JScrollPane) tabCartaz.getParent().getParent();
+        enclosingScrollPane.setBorder(BorderFactory.createEmptyBorder());
+        getContentPane().setBackground(WHITE);
+        getDesigners();
+        if(designers.size() != 0){
+        
+        fillDatas();
+       
+        fillNewDesigners();
+       
+        }else{
+    }
+    }
+    
+
+    
+        
+    public void getDesigners() {
+       int a = 0;
+       int b = game.getListaGameDesigners().size();
+       if (b > 0){
+       for (a = 0; a < b; a++){
+           designers.add(game.getListaGameDesigners().getGameDesigner(a));
+       }
+    }
+    }
+
+    public void fillDatas(){
+   
+        for (GameDesigner a: designers){
+            datas.add(a.getHora());
+        }
+        Collections.sort(datas);
+    }
+    
+    
+       
+    public void fillNewDesigners(){
+       
+  
+            
+        
+        for (LocalDateTime a : datas){
+            for (GameDesigner b : designers){
+                
+            
+            if(a.equals(b.getHora())){
+                designersSort.add(b);
+                
+            }
+        }
+        }
+        
+        
+    
+    }
+         
+    
+    
+    
+    
+    
+    
+    
+    
+    private AbstractTableModel criarModeloTabela() {   
+        String[] nomeColunas = {"Nome", "Data","Hora","Jogo"};
+        
+        return new AbstractTableModel() {     
+            @Override
+            public String getColumnName(int column) {
+                return nomeColunas[column];
+            }
+           
+            @Override
+            public int getRowCount() {
+                //Retorna o número de linhas que a tabela deverá ter
+                return game.getListaGameDesigners().size();
+            }
+
+            @Override
+            public int getColumnCount() {
+                //Retorna o número de colunas que a tabela deverá ter
+                return nomeColunas.length;
+            }
+
+            @Override
+            public Object getValueAt(int rowIndex, int columnIndex) {
+          
+                switch (columnIndex) {
+                    case 0: 
+                        return designersSort.get(rowIndex).getNome();
+                        
+                    case 1:
+                        return designersSort.get(rowIndex).getDateFormatted() ;
+                    case 2:
+                        return designersSort.get(rowIndex).getHoraSessaoFormatada();
+                    case 3:
+                        return  designersSort.get(rowIndex).getJogo();
+            
+                    default:
+                        return "";
+                }                              
+            }            
+        };
+    }
+          
+     public void atualizar() {    
+        //Informa o modelo que foram efetuadas alteracoes, o modelo informa a tabela e os dados são redesenhados
+        modeloTabela.fireTableDataChanged();
+    }        
+
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabCartaz = new javax.swing.JTable();
+        jToggleButton1 = new javax.swing.JToggleButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Listage Game Designers");
+        setResizable(false);
+
+        tabCartaz.setBackground(java.awt.Color.white);
+        tabCartaz.setForeground(java.awt.Color.black);
+        tabCartaz.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tabCartaz.setFillsViewportHeight(true);
+        jScrollPane1.setViewportView(tabCartaz);
+
+        jToggleButton1.setBackground(java.awt.Color.white);
+        jToggleButton1.setForeground(java.awt.Color.black);
+        jToggleButton1.setText("Voltar");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(653, Short.MAX_VALUE)
+                .addComponent(jToggleButton1)
+                .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 723, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        dispose();
+      
+      
+      
+      
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+     private void setICon() {
+        
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("IconImage_1.png")));
+    }
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JTable tabCartaz;
+    // End of variables declaration//GEN-END:variables
+}
